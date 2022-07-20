@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import Header from './components/Header';
+import Buttons from './components/Buttons';
+import { got } from './components/data';
+import Card from './components/Card';
 
 function App() {
+
+const[houses,setHouses] = useState(got.houses)
+const[people,setPeople] = useState(null)
+const[active, setActive] = useState(null)
+const handleClick = (houseName) => {
+  let filterPeople = houses.filter((houses) => (houses.name === houseName ? houses : null))
+  setPeople({people:filterPeople[0].people})
+  setActive(houseName)
+};
+if (active === null) {
+  handleClick(houses[0].name);
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header/>
+      <Buttons house={houses} handleClick={handleClick} active={active}/>
+      <Card people={people}/>
     </div>
   );
 }
